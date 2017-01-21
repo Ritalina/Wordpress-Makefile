@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #Instalacion
 echo "mysql-server-5.7 mysql-server/root_password password rita" | sudo debconf-set-selections
