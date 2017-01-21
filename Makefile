@@ -1,12 +1,5 @@
-DB_USER ?= wordpressuser
-DB_PASSWORD ?= password 
-DB_NAME ?= wordpress
 ROOT_PASSWORD ?= rita
 
-export DEBIAN_FRONTEND="noninteractive"
-export DB_USER
-export DB_PASSWORD
-export DB_NAME
 export ROOT_PASSWORD
 
 init:
@@ -16,13 +9,8 @@ init:
 
 apache:
 	 apt-get install apache2 -y
-
-
-db_install:
-	apt-get install mysql-server-5.7 -y && \
- 	echo "mysql-server-5.7  mysql-server/root_password $(ROOT_PASSWORD);" sudo debconf-set-selections && \
-	echo "mysql-server-5.7 mysql-server/root_password_again $(ROOT_PASSWORD);" sudo debconf-set-selections
-	
+mysql:
+        sh mysql.sh
 php:
 	apt-get install php libapache2-mod-php -y && \
 	apt-get install php-mcrypt -y && \
@@ -34,8 +22,6 @@ mod_1:
 	cp /home/rita/dir.conf /etc/apache2/mods-enabled/ && \
 	sudo chmod 1777 /etc/apache2/mods-enabled/dir.conf 
 
-db_create1:
-	 mysql -u root -p$(ROOT_PASSWORD) -e "CREATE DATABASE $(DB_NAME);" && "CREATE USER $(DB_USER)@localhost IDENTIFIED by '$(DB_PASSWORD)';" && "GRANT ALL PRIVILEGES ON $(DB_NAME).* TO $(DB_USER)@localhost; && FLUSH PRIVILEGES;" 
 
 tar_wordpress:
 	wget http://wordpress.org/latest.tar.gz && \
